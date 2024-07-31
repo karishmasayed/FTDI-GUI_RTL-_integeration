@@ -15,93 +15,11 @@ input RESET,
  
  input GUI_RD_SP_WR_EF,               // Enable writing, driven by GUI_RD_SP_WR_EF# from FT2232H  TXE
  input GUI_WR_SP_RD_FF,               // Enable reading, driven by GUI_WR_SP_RD_FF# from FT2232H   RXE
- input CLK_FTDI,          // Clock input from FT2232H
+ input CLK_FTDI          // Clock input from FT2232H
 
 
-input CLK_IN_P, 
-input CLK_IN_N,
-input DFRM_IN_P,
-input DFRM_IN_N,
-input SER_DATA_IN_P,
-input SER_DATA_IN_N,
-
-output SER_DATA_O_P,
-output SER_DATA_O_N,
-output CLK_OUT_P,
-output CLK_OUT_N,
-output DFRM_O_P,
-output DFRM_O_N
 
 );
-
-//================================================================================================================================================================================================================================================
-// ILA INSTANTIATION
-//=================================================================================================================================================================================================================================================
-
-
-ila_0 ILA_FTDI (
-.clk(clk_120mhz),
-.probe0(frame_count),
-.probe1(CLK_FTDI),
-.probe2(mts_count),
-.probe3(waiting_done),
-.probe4(data_wr_buf),
-.probe5(start_tx),
-.probe6(WRITE_N_i),
-.probe7(GUI_RD_SP_WR_EF),
-.probe8(clk_5k),
-.probe9(posedge_clk_5k),
-.probe10(SER_DATA_IN),
-.probe11(DFRM_IN),
-.probe12(clk_5Mhz),
-.probe13(SER_DATA_O),
-.probe14(DFRM_O),
-.probe15(CLK_IN),
-.probe16(DATA_RECEVIED),
-.probe17(CPLD_data_1),
-.probe18(out_cnt),
-.probe19(in_cnt) 
-);
-
-//================================================================================================================================================================
-// LVDS
-//=================================================================================================================================================================
- IBUFDS IBUFDS_inst_CLK_IN(
- .O(CLK_IN), //Bufferoutput
- .I(CLK_IN_P), //Diff_pbufferinput(connectdirectlytotop-levelport)
- .IB(CLK_IN_N)//Diff_nbufferinput(connectdirectlytotop-levelport)
- );
- 
- IBUFDS IBUFDS_inst_SER_DATA_IN(
- .O(SER_DATA_IN), //Bufferoutput
- .I(SER_DATA_IN_P), //Diff_pbufferinput(connectdirectlytotop-levelport)
- .IB(SER_DATA_IN_N)//Diff_nbufferinput(connectdirectlytotop-levelport)
- );
- 
-  IBUFDS IBUFDS_inst_DFRM_IN(
- .O(DFRM_IN), //Bufferoutput
- .I(DFRM_IN_P), //Diff_pbufferinput(connectdirectlytotop-levelport)
- .IB(DFRM_IN_N)//Diff_nbufferinput(connectdirectlytotop-levelport)
- );
-
- OBUFDS OBUFDS_inst_CLK_OUT(
- .O(CLK_OUT_P), //Diff_poutput(connectdirectlytotop-levelport)
- .OB(CLK_OUT_N), //Diff_noutput(connectdirectlytotop-levelport)
- .I(clk_5Mhz) //Bufferinput
- );
- 
-  OBUFDS OBUFDS_inst_SER_DATA_O(
- .O(SER_DATA_O_P), //Diff_poutput(connectdirectlytotop-levelport)
- .OB(SER_DATA_O_N), //Diff_noutput(connectdirectlytotop-levelport)
- .I(SER_DATA_O) //Bufferinput
- );
- 
-  OBUFDS OBUFDS_inst_DFRM_O(
- .O(DFRM_O_P), //Diff_poutput(connectdirectlytotop-levelport)
- .OB(DFRM_O_N), //Diff_noutput(connectdirectlytotop-levelport)
- .I(DFRM_O) //Bufferinput
- );
- 
  
  
 IOBUF DATA_PORT0 (.O(rx_data_buf[0]),.I(data_wr_buf[0]),.T(WRITE_N),.IO(DATA[0]));
